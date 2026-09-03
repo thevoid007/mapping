@@ -574,24 +574,41 @@ function syncPointsFromDom() {
 }
 
 // ============================================================
-// AJAX / FETCH API KE BACKEND PHP
+// Penyimpanan lokal untuk versi GitHub Pages
 // ============================================================
 
 async function apiFetch(url, method = 'GET', body = null) {
-  const opts = {
-    method,
-    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-  };
-  if (body) opts.body = JSON.stringify(body);
+  const storageKey = 'mapping-trips';
+  const trips = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  const query = new URL(url, window.location.href).searchParams;
 
-  const res = await fetch(url, opts);
-  let data;
-  try { data = await res.json(); } catch (_) { data = null; }
-
-  if (!res.ok || !data) {
-    throw new Error((data && data.error) || ('HTTP ' + res.status));
+  if (method === 'POST') {
+    const trip = {
+      id: Date.now(),
+      name: body.name,
+      description: body.description || '',
+      points: body.points || [],
+      created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    };
+    if (trips.some((item) => item.name === trip.name)) trip.name += ' (baru)';
+    trips.unshift(trip);
+    localStorage.setItem(storageKey, JSON.stringify(trips));
+    return trip;
   }
-  return data;
+
+  if (method === 'DELETE') {
+    const remaining = trips.filter((trip) => String(trip.id) !== query.get('id'));
+    localStorage.setItem(storageKey, JSON.stringify(remaining));
+    return { success: true };
+  }
+
+  if (query.get('action') === 'get') {
+    const trip = trips.find((item) => String(item.id) === query.get('id'));
+    if (!trip) throw new Error('Rute tidak ditemukan.');
+    return { trip };
+  }
+
+  return { trips };
 }
 
 // ============================================================
@@ -754,10 +771,10 @@ function clearAllPoints(confirm = true) {
 }
 
 // ============================================================
-// SIMPAN & MUAT RUTE (DATABASE)
+// SIMPAN & MUAT RUTE
 // ============================================================
 
-/** Menyimpan rute saat ini ke database. */
+/** Menyimpan rute saat ini di browser. */
 async function saveTrip() {
   const errors = validateTrip();
   if (errors.length > 0) {
@@ -777,7 +794,7 @@ async function saveTrip() {
       points,
     });
 
-    showToast(`Rute "${data.name}" berhasil disimpan (ID: ${data.id}).`, 'success');
+    showToast(`Rute "${data.name}" berhasil disimpan di browser.`, 'success');
     loadSavedTrips();
     // update input nama agar memakai nama yang tersimpan (jika duplikat ditangani server)
     els.tripName.value = data.name;
@@ -785,7 +802,7 @@ async function saveTrip() {
     showToast('Gagal menyimpan: ' + err.message, 'error');
   } finally {
     els.btnSaveTrip.disabled = false;
-    els.btnSaveTrip.textContent = '💾 Simpan ke Database';
+    els.btnSaveTrip.textContent = '💾 Simpan di Browser';
   }
 }
 
@@ -869,7 +886,7 @@ async function loadTripIntoPlanner(trip) {
   els.tripDescription.value = trip.description || '';
 
   try {
-    // Ambil detail point dari database
+    // Ambil detail titik dari penyimpanan lokal
     const detail = await apiFetch('api/trips.php?action=get&id=' + trip.id, 'GET');
     const tripDetail = detail.trip || {};
     const pts = tripDetail.points || [];
