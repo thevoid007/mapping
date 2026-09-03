@@ -1,0 +1,663 @@
+/* ============================================================
+   MAPPING - Stylesheet
+   Modern, responsive, professional, futuristik
+   ============================================================ */
+
+:root {
+  --bg-dark: #070b14;
+  --bg-panel: rgba(13, 20, 38, 0.82);
+  --surface: #0f1830;
+  --surface-2: #131f3d;
+  --border: rgba(99, 179, 237, 0.18);
+  --border-strong: rgba(99, 179, 237, 0.4);
+  --text: #e8f1ff;
+  --text-dim: #9fb3d8;
+  --muted: #6f83a8;
+  --accent: #3ec6ff;
+  --accent-2: #7c5cff;
+  --success: #2ee59d;
+  --danger: #ff5c7a;
+  --warning: #ffb648;
+  --glass-bg: rgba(16, 25, 51, 0.55);
+  --radius: 16px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
+  --mono: 'Consolas', 'SF Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% -10%, #12234d 0%, var(--bg-dark) 55%);
+  overflow: hidden;
+}
+
+/* ============ LAYOUT UTAMA ============ */
+.app {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  grid-template-rows: 100vh;
+  position: relative;
+}
+
+/* ============ PETA ============ */
+.map-area { position: relative; min-width: 0; }
+
+.map-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--bg-dark);
+}
+
+.map-header {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+  font-size: 30px;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(62, 198, 255, 0.8);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.75; }
+}
+
+.brand h1 {
+  font-size: 18px;
+  letter-spacing: 5px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.brand p { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; }
+
+.map-stats {
+  display: flex;
+  gap: 14px;
+  padding-left: 14px;
+  border-left: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.stat { color: var(--text-dim); white-space: nowrap; }
+.stat b { color: var(--accent); font-size: 15px; }
+
+.map-notice {
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 60%;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.map-notice.error {
+  border-color: rgba(255, 92, 122, 0.5);
+  background: rgba(60, 12, 24, 0.5);
+}
+
+.map-notice.info {
+  border-color: rgba(62, 198, 255, 0.45);
+  background: rgba(10, 32, 60, 0.6);
+}
+
+/* Agar atribut `hidden` menyembunyikan notice (display:flex mengalahkan bawaan hidden). */
+.map-notice[hidden] {
+  display: none !important;
+}
+
+.map-notice .notice-icon { color: var(--accent); }
+
+.notice-close {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Override Leaflet styling untuk kesan futuristik */
+.leaflet-container {
+  font-family: var(--font);
+  background: #0d1425;
+}
+
+.leaflet-control-zoom a {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+.leaflet-control-zoom a:hover { background: var(--surface-2) !important; }
+
+.leaflet-popup-content-wrapper {
+  background: rgba(15, 24, 48, 0.95);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.leaflet-popup-tip {
+  background: rgba(15, 24, 48, 0.95);
+  border: 1px solid var(--border-strong);
+}
+
+.leaflet-popup-content { margin: 14px 16px; }
+
+.popup-title { font-weight: 700; margin-bottom: 4px; color: var(--accent); }
+.popup-coords { font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+.popup-label { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+/* Marker buatan sendiri (divIcon) */
+.custom-marker {
+  width: 30px;
+  height: 38px;
+  position: relative;
+  transform: translate(-15px, -38px);
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.5));
+}
+
+.custom-marker .pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+.custom-marker .pin span {
+  transform: rotate(45deg);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.custom-marker .tail {
+  width: 6px;
+  height: 8px;
+  background: inherit;
+  border-radius: 0 0 4px 4px;
+}
+
+.pin.start { background: linear-gradient(135deg, #2ee59d, #12b97e); }
+.pin.mid   { background: linear-gradient(135deg, #3ec6ff, #1f8fe0); }
+.pin.end   { background: linear-gradient(135deg, #ff5c7a, #e03450); }
+
+/* ============ PANEL KANAN ============ */
+.side-panel {
+  position: relative;
+  z-index: 1100;
+  background: rgba(7, 12, 22, 0.9);
+  backdrop-filter: blur(14px);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0;
+}
+
+.panel-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 14px 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 8px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px 10px 0 0;
+  transition: all 0.2s;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab.active {
+  color: var(--accent);
+  background: rgba(62, 198, 255, 0.08);
+  border-bottom: 2px solid var(--accent);
+  box-shadow: inset 0 -1px 0 var(--accent), 0 0 18px rgba(62, 198, 255, 0.15);
+}
+
+.tab-panel {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 24px;
+}
+
+.tab-panel.active { display: block; }
+
+.tab-panel::-webkit-scrollbar { width: 8px; }
+.tab-panel::-webkit-scrollbar-track { background: transparent; }
+.tab-panel::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
+
+.panel-head h2 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.panel-head p { font-size: 12.5px; color: var(--text-dim); margin-bottom: 18px; }
+
+/* ============ FORM ============ */
+.form-label { display: block; font-size: 12.5px; color: var(--text-dim); margin-bottom: 8px; }
+
+.form-row { margin-bottom: 16px; }
+
+.form-row label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-family: var(--font);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(62, 198, 255, 0.15);
+}
+
+input[type="text"]::placeholder, textarea::placeholder { color: var(--muted); }
+
+textarea { resize: vertical; min-height: 52px; }
+
+/* ============ BARIS TITIK ============ */
+#pointsList { display: flex; flex-direction: column; gap: 8px; max-height: 40vh; overflow-y: auto; padding-right: 2px; }
+#pointsList::-webkit-scrollbar { width: 7px; }
+#pointsList::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 6px; }
+
+.point-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  transition: border-color 0.2s, transform 0.15s;
+  cursor: grab;
+}
+
+.point-row.dragging {
+  opacity: 0.5;
+  border-color: var(--accent);
+  transform: scale(1.02);
+}
+
+.point-row.drag-over { border-color: var(--accent-2); }
+
+.order-badge {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+}
+
+.point-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.point-input:focus { outline: none; border-color: var(--accent); }
+
+.point-status { flex-shrink: 0; font-size: 15px; width: 18px; text-align: center; }
+.point-status.ok { color: var(--success); }
+.point-status.err { color: var(--danger); }
+.point-status.loading { color: var(--accent); animation: spin 0.9s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.icon-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.icon-btn:hover { background: var(--border); color: var(--text); }
+
+.up-btn:hover, .down-btn:hover { color: var(--accent); }
+.remove-btn:hover { background: rgba(255, 92, 122, 0.15); color: var(--danger); }
+
+/* Tombol "tandai terakhir / lanjutkan" */
+.last-btn { font-size: 11px; color: var(--muted); }
+.last-btn:hover { color: var(--warning); background: rgba(255, 182, 72, 0.12); }
+
+.point-row.is-last { border-color: rgba(255, 182, 72, 0.55); }
+.point-row.is-last .order-badge { background: linear-gradient(135deg, #ffb648, #ff8a3d); }
+.point-row.is-last .last-btn {
+  color: #fff;
+  background: linear-gradient(135deg, #ffb648, #ff8a3d);
+  font-weight: 700;
+}
+.point-row.is-last .point-input { background: rgba(255, 182, 72, 0.06); }
+
+/* ============ TOMBOL ============ */
+.actions { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-block { width: 100%; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #2aa8ff, #7c5cff);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(62, 130, 255, 0.35);
+}
+
+.btn-primary:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: linear-gradient(135deg, #1f8fe0, #3ec6ff);
+  color: #fff;
+}
+
+.btn-secondary:hover:not(:disabled) { filter: brightness(1.08); }
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover:not(:disabled) { color: var(--text); border-color: var(--border-strong); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover:not(:disabled) { filter: brightness(1.1); }
+
+.btn-row { display: flex; gap: 8px; }
+.btn-row .btn { flex: 1; }
+
+/* ============ KOTAK SIMPAN ============ */
+.save-box {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: var(--radius);
+}
+
+.save-box h3 { font-size: 14px; margin-bottom: 4px; color: var(--accent); }
+.save-box .muted { margin-bottom: 12px; }
+.save-box textarea { margin-bottom: 12px; }
+
+.muted { color: var(--muted); font-size: 12.5px; }
+
+.credit {
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ============ DAFTAR RUTE TERSIMPAN ============ */
+.saved-list { display: flex; flex-direction: column; gap: 10px; }
+
+.saved-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  transition: border-color 0.2s;
+}
+
+.saved-card:hover { border-color: var(--border-strong); }
+
+.saved-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.saved-card-head h3 {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved-meta { font-size: 12px; color: var(--text-dim); display: flex; gap: 12px; }
+
+.saved-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.saved-actions .btn { flex: 1; padding: 9px 8px; font-size: 12.5px; }
+
+.empty-state {
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+  padding: 30px 10px;
+  font-size: 13.5px;
+}
+
+.empty-icon { font-size: 34px; display: block; margin-bottom: 8px; }
+
+.loader { text-align: center; padding: 30px; color: var(--text-dim); }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ============ ABOUT ============ */
+.about-content p, .about-content ul { font-size: 13px; line-height: 1.8; color: var(--text-dim); margin-bottom: 14px; }
+.about-content strong { color: var(--text); }
+.about-content ul { padding-left: 18px; }
+.about-content li { margin-bottom: 6px; }
+.about-content code {
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(4, 8, 16, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Agar atribut `hidden` benar-benar menyembunyikan overlay
+   (CSS display:flex di atas mengalahkan bawaan `hidden`). */
+.modal-overlay[hidden] {
+  display: none !important;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 22px;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.modal h3 { margin-bottom: 10px; color: var(--accent); }
+.modal p { color: var(--text-dim); font-size: 13.5px; margin-bottom: 18px; line-height: 1.6; }
+
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+.modal-actions .btn { min-width: 110px; }
+
+/* Koordinat dalam modal info */
+.coord-line {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.coord-line b { color: var(--accent); margin-right: 4px; }
+
+.coord-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  display: block;
+  margin-top: 2px;
+}
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 4000;
+  padding: 13px 18px;
+  border-radius: 12px;
+  background: rgba(20, 32, 60, 0.95);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow);
+  font-size: 13.5px;
+  max-width: 380px;
+  animation: slideUp 0.3s ease;
+}
+
+.toast.success { border-color: rgba(46, 229, 157, 0.6); }
+.toast.error { border-color: rgba(255, 92, 122, 0.6); }
+.toast.info { border-color: rgba(62, 198, 255, 0.6); }
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 55vh 45vh; }
+
+  .side-panel { height: 45vh; border-left: none; border-top: 1px solid var(--border); }
+
+  .map-header { top: 10px; left: 10px; padding: 10px 14px; }
+  .brand p { display: none; }
+  .map-stats { display: none; }
+
+  .map-notice { max-width: 85%; top: 10px; }
+
+  body { overflow: auto; }
+
+  #pointsList { max-height: 22vh; }
+}
+
+@media (max-width: 480px) {
+  .app { grid-template-rows: 50vh 50vh; }
+  .side-panel { height: 50vh; }
+  .panel-tabs { padding: 10px 10px 0; }
+  .tab-panel { padding: 16px 12px 20px; }
+}
