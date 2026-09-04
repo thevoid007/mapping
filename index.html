@@ -44,6 +44,13 @@
                 <p>Masukkan lokasi secara berurutan &mdash; titik pertama menjadi titik awal.</p>
             </div>
             <form id="pointForm" autocomplete="off" novalidate>
+                <div class="route-mgr">
+                    <div class="route-mgr-head">
+                        <span class="route-mgr-title">Rute Aktif</span>
+                        <button type="button" class="btn btn-ghost btn-sm" id="btnAddRoute">＋ Tambah Rute</button>
+                    </div>
+                    <div id="routeTabs" class="route-tabs"></div>
+                </div>
                 <div class="form-row label-double">
                     <label for="tripName">Nama Perjalanan</label>
                     <input type="text" id="tripName" name="tripName" placeholder="cth: Mudik Bandung" maxlength="191" required>
@@ -109,13 +116,33 @@
 <div id="toast" class="toast" hidden></div>
 <template id="pointRowTemplate">
     <div class="point-row" draggable="true">
-        <span class="order-badge">1</span>
-        <input type="text" class="point-input" placeholder="Masukkan nama lokasi atau alamat..." aria-label="Nama lokasi" required maxlength="255">
-        <span class="point-status"></span>
-        <button type="button" class="icon-btn last-btn" title="Tandai sebagai titik terakhir / lanjutkan">◉</button>
-        <button type="button" class="icon-btn up-btn" title="Naikkan urutan">↑</button>
-        <button type="button" class="icon-btn down-btn" title="Turunkan urutan">↓</button>
-        <button type="button" class="icon-btn remove-btn" title="Hapus titik">✕</button>
+        <div class="point-main">
+            <span class="order-badge">1</span>
+            <input type="text" class="point-input" placeholder="Masukkan nama lokasi atau koordinat..." aria-label="Nama lokasi" required maxlength="255">
+            <span class="point-status"></span>
+            <button type="button" class="icon-btn focus-btn" title="Fokus ke area titik ini">◎</button>
+            <button type="button" class="icon-btn up-btn" title="Naikkan urutan">↑</button>
+            <button type="button" class="icon-btn down-btn" title="Turunkan urutan">↓</button>
+            <button type="button" class="icon-btn remove-btn" title="Hapus titik">✕</button>
+        </div>
+        <div class="point-fields">
+            <label class="field-group">
+                <span class="field-label">R</span>
+                <input type="number" class="field-input radius-input" value="300" min="1" step="10" placeholder="m">
+                <span class="field-unit">m</span>
+            </label>
+            <label class="field-group">
+                <span class="field-label">Az</span>
+                <input type="number" class="field-input azimuth-input" value="0" min="0" max="360" step="1" placeholder="°">
+                <span class="field-unit">°</span>
+            </label>
+            <label class="field-group">
+                <span class="field-label">Bw</span>
+                <input type="number" class="field-input beam-input" value="360" min="1" max="360" step="1" placeholder="°">
+                <span class="field-unit">°</span>
+            </label>
+        </div>
+        <div class="point-error" hidden></div>
     </div>
 </template>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
